@@ -3,15 +3,20 @@ import type { docs_v1 } from 'googleapis';
 // Content source paths from docs folder
 export const PELICAN_CONTENT_PATHS = {
   // Framework documents
+  // @deprecated - Legacy framework content
   framework001: 'docs/frameworks/AIB-001-lesson-objective-unpacker.md',
-  
+
+  // Marketing content
+  marketingCopy: 'docs/marketing/beta-launch-copy.md',
+
   // Survey templates
   postFrameworkSurvey: 'docs/forms/post-framework-survey.md',
   weeklyCheckin: 'docs/forms/weekly-check-in-survey.md',
-  
+  userFeedbackSurvey: 'docs/forms/user-feedback-survey.md',
+
   // Welcome kit
   welcomeKit: 'docs/context/beta-welcome-kit.md',
-  
+
   // Brand guidelines
   brandGuidelines: 'docs/context/PELICAN_AI_BRAND_GUIDELINES.md',
 } as const;
@@ -21,7 +26,7 @@ export const PELICAN_CONTEXT = {
   projectName: 'Pelican AI',
   tagline: 'Navigate AI with Confidence',
   mission: 'Empower Louisiana educators with practical, ethical, and platform-agnostic AI guidance',
-  
+
   phase1Goals: {
     betaTesters: 20,
     emailOpenRate: 0.75,
@@ -30,19 +35,19 @@ export const PELICAN_CONTEXT = {
     pageLoadTime: 3,
     emailDeliveryTime: 10,
   },
-  
+
   emailAddresses: {
     hello: 'hello@pelicanai.org',
     beta: 'beta@pelicanai.org',
     weekly: 'weekly@pelicanai.org',
   },
-  
+
   urls: {
     website: 'https://pelicanai.org',
     primaryLogo: 'https://pelicanai.org/primary-logo.png',
     secondaryLogo: 'https://pelicanai.org/secondary-logo.png',
   },
-  
+
   betaProgram: {
     startDate: '2025-10-15',
     duration: '12 weeks',
@@ -67,9 +72,12 @@ export interface ParsedTemplate {
 // Survey/Form interfaces
 export interface SurveyQuestion {
   title: string;
-  type: 'multiple-choice' | 'linear-scale' | 'long-answer' | 'checkboxes' | 'dropdown';
+  type: 'multiple-choice' | 'linear-scale' | 'long-answer' | 'short-answer' | 'checkboxes' | 'dropdown' | 'choice-grid' | 'page-break';
   required: boolean;
   options?: string[];
+  rows?: string[]; // For choice-grid
+  columns?: string[]; // For choice-grid
+  description?: string; // Helper text for questions
   low?: number;
   high?: number;
   lowLabel?: string;
@@ -102,7 +110,7 @@ export interface GenerateDocOptions {
 
 export interface GenerateFormOptions {
   templatePath: string;
-  type: 'post-framework-survey' | 'weekly-checkin';
+  type: 'post-framework-survey' | 'weekly-checkin' | 'user-feedback-survey';
 }
 
 // Google Docs API helpers

@@ -1,4 +1,5 @@
 import { google, Auth } from 'googleapis';
+import { OAuth2Client } from 'google-auth-library';
 import fs from 'fs/promises';
 import path from 'path';
 import os from 'os';
@@ -72,6 +73,9 @@ export async function authenticateGoogle(): Promise<Auth.OAuth2Client> {
  * Get an authenticated client from existing token
  */
 export async function getAuthClient(): Promise<Auth.OAuth2Client> {
+  // #region agent log
+  fetch('http://127.0.0.1:7242/ingest/28a023ef-bf78-4eec-9133-bb82fae05314',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'google-auth.ts:74',message:'getAuthClient entry',data:{tokenPath:TOKEN_PATH,credentialsPath:CREDENTIALS_PATH},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A,B,C,E'})}).catch(()=>{});
+  // #endregion
   try {
     const content = await fs.readFile(TOKEN_PATH, 'utf-8');
     const credentials = JSON.parse(content);
